@@ -19,13 +19,9 @@ import java.util.Locale;
 public class IntentReceiverTest extends Activity {
 
     static final Boolean[] listening = new Boolean[]{Boolean.FALSE};
-
     static ArrayList<String> broadcasts;
-
     static BroadcastReceiver receiver;
-
     private Button b;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,17 +42,11 @@ public class IntentReceiverTest extends Activity {
         });
     }
 
-    /* (non-Javadoc)
-     * @see android.app.Activity#onActivityResult(int, int, android.content.Intent)
-     */
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
     }
 
-    /* (non-Javadoc)
-     * @see android.app.Activity#onResume()
-     */
     @Override
     protected void onResume() {
         super.onResume();
@@ -89,10 +79,9 @@ public class IntentReceiverTest extends Activity {
         synchronized (listening) {
             stopListening();
             this.listening[0] = true;
-            broadcasts = new ArrayList<String>();
+            broadcasts = new ArrayList<>();
 
             receiver = new BroadcastReceiver() {
-
                 @Override
                 public void onReceive(Context context, Intent intent) {
                     synchronized (listening) {
@@ -101,10 +90,9 @@ public class IntentReceiverTest extends Activity {
                     }
                     IntentReceiverTest.this.updateState();
                 }
-
             };
 
-            broadcasts = new ArrayList<String>();
+            broadcasts = new ArrayList<>();
             IntentFilter filter = new IntentFilter();
             filter.addAction("org.commcare.dalvik.api.action.data.update");
             filter.addAction("org.commcare.dalvik.api.action.session.login");
@@ -113,7 +101,6 @@ public class IntentReceiverTest extends Activity {
             IntentReceiverTest.this.updateState();
 
         }
-
     }
 
     private void stopListening() {
@@ -124,12 +111,8 @@ public class IntentReceiverTest extends Activity {
                 broadcasts.clear();
             }
         }
-
     }
 
-    /* (non-Javadoc)
-     * @see android.app.Activity#onRetainNonConfigurationInstance()
-     */
     @Override
     public Object onRetainNonConfigurationInstance() {
         return this;
