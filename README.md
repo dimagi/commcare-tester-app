@@ -1,2 +1,2 @@
 # commcare-tester-app
-Android app to test CommCare case and fixture content providers
+This is a standalone Android application which provides demonstrations for the API integrations that are provided by CommCare
