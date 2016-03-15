@@ -25,10 +25,6 @@ public class ExternalAppActivity extends Activity {
 
     private Button login;
     private Button sync;
-    private Button content;
-    private Button media;
-    private Button receiver;
-    private Button fixtureButton;
 
     private byte[] publicKey;
     private String keyId;
@@ -97,7 +93,7 @@ public class ExternalAppActivity extends Activity {
 
         });
 
-        media = (Button)this.findViewById(R.id.button_media);
+        Button media = (Button)this.findViewById(R.id.button_media);
         media.setOnClickListener(new OnClickListener() {
             public void onClick(View v) {
                 Intent i = new Intent(ExternalAppActivity.this, CaseMediaActivity.class);
@@ -105,7 +101,7 @@ public class ExternalAppActivity extends Activity {
             }
         });
 
-        content = (Button)this.findViewById(R.id.button_content);
+        Button content = (Button)this.findViewById(R.id.button_content);
         content.setOnClickListener(new OnClickListener() {
             public void onClick(View v) {
                 Intent i = new Intent(ExternalAppActivity.this, CaseContentActivity.class);
@@ -113,7 +109,7 @@ public class ExternalAppActivity extends Activity {
             }
         });
 
-        fixtureButton = (Button)this.findViewById(R.id.button_fixture);
+        Button fixtureButton = (Button)this.findViewById(R.id.button_fixture);
         fixtureButton.setOnClickListener(new OnClickListener() {
             public void onClick(View v) {
                 Intent i = new Intent(ExternalAppActivity.this, FixtureContentActivity.class);
@@ -122,7 +118,7 @@ public class ExternalAppActivity extends Activity {
         });
 
 
-        receiver = (Button)this.findViewById(R.id.button_receiver);
+        Button receiver = (Button)this.findViewById(R.id.button_receiver);
         receiver.setOnClickListener(new OnClickListener() {
             public void onClick(View v) {
                 Intent i = new Intent(ExternalAppActivity.this, IntentReceiverTest.class);

@@ -17,12 +17,9 @@ import java.io.IOException;
 
 public class IntentCalloutTest extends Activity {
 
-    private Button getImage;
-    private Button returnToForm;
     private EditText defaultval;
     private EditText extraVal;
     private TextView imageLocationText;
-    private TextView outputTextView;
 
     private File location;
 
@@ -32,11 +29,11 @@ public class IntentCalloutTest extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_callout);
-        returnToForm = (Button)this.findViewById(R.id.button_return);
+        Button returnToForm = (Button)this.findViewById(R.id.button_return);
 
         Intent intent = getIntent();
 
-        outputTextView = (TextView)this.findViewById(R.id.textView2);
+        TextView outputTextView = (TextView)this.findViewById(R.id.textView2);
         String displayText = intent.getStringExtra("display_text");
         outputTextView.setText(displayText);
 
@@ -65,7 +62,7 @@ public class IntentCalloutTest extends Activity {
             }
         });
 
-        getImage = (Button)this.findViewById(R.id.extra_image_value);
+        Button getImage = (Button)this.findViewById(R.id.extra_image_value);
         getImage.setOnClickListener(new OnClickListener() {
             public void onClick(View v) {
                 Intent i = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
