@@ -16,9 +16,9 @@
 
     <EditText
         android:id="@+id/default_callback_value"
-        android:minEms="20"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:minEms="20"
         />
 
     <TextView
@@ -28,9 +28,9 @@
 
     <EditText
         android:id="@+id/extra_callback_value"
-        android:minEms="20"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:minEms="20"
         />
 
     <TextView
@@ -43,7 +43,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Grab an Image!"/>
-    />
 
     <TextView
         android:id="@+id/image_location"

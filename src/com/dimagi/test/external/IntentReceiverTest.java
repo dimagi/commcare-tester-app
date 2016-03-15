@@ -18,9 +18,9 @@ import java.util.Locale;
 
 public class IntentReceiverTest extends Activity {
 
-    static final Boolean[] listening = new Boolean[]{Boolean.FALSE};
-    static ArrayList<String> broadcasts;
-    static BroadcastReceiver receiver;
+    private static final Boolean[] listening = new Boolean[]{Boolean.FALSE};
+    private static ArrayList<String> broadcasts;
+    private static BroadcastReceiver receiver;
     private Button b;
 
     @Override
@@ -43,13 +43,9 @@ public class IntentReceiverTest extends Activity {
     }
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-    }
-
-    @Override
     protected void onResume() {
         super.onResume();
+
         updateState();
     }
 
@@ -78,7 +74,7 @@ public class IntentReceiverTest extends Activity {
     private void startListening() {
         synchronized (listening) {
             stopListening();
-            this.listening[0] = true;
+            listening[0] = true;
             broadcasts = new ArrayList<>();
 
             receiver = new BroadcastReceiver() {
@@ -105,8 +101,8 @@ public class IntentReceiverTest extends Activity {
 
     private void stopListening() {
         synchronized (listening) {
-            if (this.listening[0]) {
-                this.listening[0] = false;
+            if (listening[0]) {
+                listening[0] = false;
                 this.unregisterReceiver(receiver);
                 broadcasts.clear();
             }

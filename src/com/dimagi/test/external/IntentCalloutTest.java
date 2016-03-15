@@ -17,16 +17,16 @@ import java.io.IOException;
 
 public class IntentCalloutTest extends Activity {
 
-    Button getImage;
-    Button returnToForm;
-    EditText defaultval;
-    EditText extraVal;
-    TextView imageLocationText;
-    TextView outputTextView;
+    private Button getImage;
+    private Button returnToForm;
+    private EditText defaultval;
+    private EditText extraVal;
+    private TextView imageLocationText;
+    private TextView outputTextView;
 
-    File location;
+    private File location;
 
-    public static final int KEY_REQUEST_IMAGE = 1;
+    private static final int KEY_REQUEST_IMAGE = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -97,7 +97,7 @@ public class IntentCalloutTest extends Activity {
             location = ((IntentCalloutTest)this.getLastNonConfigurationInstance()).location;
         }
 
-        if (savedInstanceState != null) {
+        if (savedInstanceState != null && savedInstanceState.containsKey("location")) {
             location = new File(savedInstanceState.getString("location"));
         }
     }

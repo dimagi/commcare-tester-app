@@ -23,17 +23,17 @@ import javax.crypto.SecretKey;
 
 public class ExternalAppActivity extends Activity {
 
-    Button login;
-    Button sync;
-    Button content;
-    Button media;
-    Button receiver;
-    Button fixtureButton;
+    private Button login;
+    private Button sync;
+    private Button content;
+    private Button media;
+    private Button receiver;
+    private Button fixtureButton;
 
-    byte[] publicKey;
-    String keyId;
+    private byte[] publicKey;
+    private String keyId;
 
-    public static final int KEY_REQUEST_CODE = 1;
+    private static final int KEY_REQUEST_CODE = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -156,14 +156,14 @@ public class ExternalAppActivity extends Activity {
         }
     }
 
-    protected Pair<byte[], byte[]> serializeBundle(Bundle b) {
+    private Pair<byte[], byte[]> serializeBundle(Bundle b) {
         Parcel p = Parcel.obtain();
         p.setDataPosition(0);
         p.writeBundle(b);
         return encrypt(p.marshall());
     }
 
-    protected Pair<byte[], byte[]> encrypt(byte[] input) {
+    private Pair<byte[], byte[]> encrypt(byte[] input) {
         try {
             KeyGenerator generator = KeyGenerator.getInstance("AES");
             generator.init(256, new SecureRandom());

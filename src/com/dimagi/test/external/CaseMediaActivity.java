@@ -19,7 +19,7 @@ import android.widget.SimpleCursorAdapter;
  */
 public class CaseMediaActivity extends Activity {
 
-    public String CASE_URI_ROOT = "content://org.commcare.dalvik.case/casedb/";
+    private final String CASE_URI_ROOT = "content://org.commcare.dalvik.case/casedb/";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
