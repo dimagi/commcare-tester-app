@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          package="com.dimagi.test.external"
+<manifest package="com.dimagi.test.external"
+          xmlns:android="http://schemas.android.com/apk/res/android"
           android:versionName="1.0">
 
     <uses-permission android:name="org.commcare.dalvik.provider.cases.read"/>
@@ -46,7 +46,12 @@
         </activity>
 
         <activity android:name="IntentReceiverTest"/>
+
+        <activity android:name="SimprintsIdentifyTest">
+            <intent-filter>
+                <action android:name="org.commcare.dalvik.fake.simprints.IDENTIFY"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
+        </activity>
     </application>
-
-
 </manifest>

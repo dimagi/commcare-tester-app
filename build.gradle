@@ -12,11 +12,16 @@ buildscript {
 repositories {
     mavenCentral()
     jcenter()
+    // for local aar inclusion
+    flatDir {
+        dirs 'libs'
+    }
 }
 apply plugin: 'com.android.application'
 
 dependencies {
     compile 'com.android.support:support-v4:23.3.0'
+    compile(name: 'simprints-lib', ext: 'aar')
 }
 
 ext {
