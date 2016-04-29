@@ -17,37 +17,27 @@ import java.io.IOException;
 
 public class IntentCalloutTest extends Activity {
 
-    Button getImage;
-    Button returnToForm;
-    EditText defaultval;
-    EditText extraVal;
-    TextView imageLocationText;
-    TextView outputTextView;
+    private EditText defaultval;
+    private EditText extraVal;
+    private TextView imageLocationText;
 
-    File location;
+    private File location;
 
-    public static final int KEY_REQUEST_IMAGE = 1;
+    private static final int KEY_REQUEST_IMAGE = 1;
 
-    /*
-     * (non-Javadoc)
-     * @see android.app.Activity#onCreate(android.os.Bundle)
-     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_callout);
-        returnToForm = (Button)this.findViewById(R.id.button_return);
+        Button returnToForm = (Button)this.findViewById(R.id.button_return);
 
         Intent intent = getIntent();
 
-        outputTextView = (TextView)this.findViewById(R.id.textView2);
-
+        TextView outputTextView = (TextView)this.findViewById(R.id.textView2);
         String displayText = intent.getStringExtra("display_text");
-
         outputTextView.setText(displayText);
 
         returnToForm.setOnClickListener(new OnClickListener() {
-
             public void onClick(View v) {
                 Intent returningIntent = new Intent(getIntent());
 
@@ -70,10 +60,9 @@ public class IntentCalloutTest extends Activity {
                 IntentCalloutTest.this.setResult(Activity.RESULT_OK, returningIntent);
                 finish();
             }
-
         });
 
-        getImage = (Button)this.findViewById(R.id.extra_image_value);
+        Button getImage = (Button)this.findViewById(R.id.extra_image_value);
         getImage.setOnClickListener(new OnClickListener() {
             public void onClick(View v) {
                 Intent i = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
@@ -95,27 +84,21 @@ public class IntentCalloutTest extends Activity {
                     Toast.makeText(IntentCalloutTest.this, "No Camera", Toast.LENGTH_SHORT).show();
                 }
             }
-
         });
 
         defaultval = (EditText)this.findViewById(R.id.default_callback_value);
-
         extraVal = (EditText)this.findViewById(R.id.extra_callback_value);
-
         imageLocationText = (TextView)this.findViewById(R.id.image_location);
 
         if (this.getLastNonConfigurationInstance() != null) {
             location = ((IntentCalloutTest)this.getLastNonConfigurationInstance()).location;
         }
 
-        if (savedInstanceState != null) {
+        if (savedInstanceState != null && savedInstanceState.containsKey("location")) {
             location = new File(savedInstanceState.getString("location"));
         }
     }
 
-    /* (non-Javadoc)
-     * @see android.app.Activity#onActivityResult(int, int, android.content.Intent)
-     */
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -127,9 +110,6 @@ public class IntentCalloutTest extends Activity {
         }
     }
 
-    /* (non-Javadoc)
-     * @see android.app.Activity#onResume()
-     */
     @Override
     protected void onResume() {
         super.onResume();
@@ -140,18 +120,12 @@ public class IntentCalloutTest extends Activity {
         }
     }
 
-    /* (non-Javadoc)
-     * @see android.app.Activity#onSaveInstanceState(android.os.Bundle)
-     */
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putString("location", location.toString());
     }
 
-    /* (non-Javadoc)
-     * @see android.app.Activity#onRetainNonConfigurationInstance()
-     */
     @Override
     public Object onRetainNonConfigurationInstance() {
         return this;

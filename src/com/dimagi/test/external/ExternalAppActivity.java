@@ -23,29 +23,20 @@ import javax.crypto.SecretKey;
 
 public class ExternalAppActivity extends Activity {
 
-    Button login;
-    Button sync;
-    Button content;
-    Button media;
-    Button receiver;
-    Button fixtureButton;
+    private Button login;
+    private Button sync;
 
-    byte[] publicKey;
-    String keyId;
+    private byte[] publicKey;
+    private String keyId;
 
-    public static final int KEY_REQUEST_CODE = 1;
+    private static final int KEY_REQUEST_CODE = 1;
 
-    /*
-     * (non-Javadoc)
-     * @see android.app.Activity#onCreate(android.os.Bundle)
-     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
-        Button b = (Button)this.findViewById(R.id.btn_start_cc);
-        b.setOnClickListener(new OnClickListener() {
-
+        Button startCommCareButton = (Button)this.findViewById(R.id.btn_start_cc);
+        startCommCareButton.setOnClickListener(new OnClickListener() {
             public void onClick(View v) {
                 Intent i = new Intent("org.commcare.dalvik.action.CommCareSession");
                 String sssd = "";
@@ -57,22 +48,18 @@ public class ExternalAppActivity extends Activity {
                 i.putExtra("ccodk_session_request", sssd);
                 ExternalAppActivity.this.startActivity(i);
             }
-
         });
 
-        Button ac = (Button)this.findViewById(R.id.acquire_key);
-        ac.setOnClickListener(new OnClickListener() {
-
+        Button acquireKeyButton = (Button)this.findViewById(R.id.acquire_key);
+        acquireKeyButton.setOnClickListener(new OnClickListener() {
             public void onClick(View v) {
                 Intent i = new Intent("org.commcare.dalvik.action.CommCareKeyAccessRequest");
                 ExternalAppActivity.this.startActivityForResult(i, KEY_REQUEST_CODE);
             }
-
         });
 
         login = (Button)this.findViewById(R.id.log_in_local);
         login.setOnClickListener(new OnClickListener() {
-
             public void onClick(View v) {
                 Intent i = new Intent("org.commcare.dalvik.api.action.ExternalAction");
                 i.putExtra("commcare_sharing_key_id", keyId);
@@ -87,12 +74,10 @@ public class ExternalAppActivity extends Activity {
 
                 ExternalAppActivity.this.sendBroadcast(i);
             }
-
         });
 
         sync = (Button)this.findViewById(R.id.sync);
         sync.setOnClickListener(new OnClickListener() {
-
             public void onClick(View v) {
                 Intent i = new Intent("org.commcare.dalvik.api.action.ExternalAction");
                 i.putExtra("commcare_sharing_key_id", keyId);
@@ -105,60 +90,42 @@ public class ExternalAppActivity extends Activity {
 
                 ExternalAppActivity.this.sendBroadcast(i);
             }
-
         });
 
-        media = (Button)this.findViewById(R.id.button_media);
+        Button media = (Button)this.findViewById(R.id.button_media);
         media.setOnClickListener(new OnClickListener() {
-
             public void onClick(View v) {
                 Intent i = new Intent(ExternalAppActivity.this, CaseMediaActivity.class);
-
                 ExternalAppActivity.this.startActivity(i);
             }
-
         });
 
-        content = (Button)this.findViewById(R.id.button_content);
-        content.setOnClickListener(new OnClickListener() {
-
+        Button getCaseDataButton = (Button)this.findViewById(R.id.button_content);
+        getCaseDataButton.setOnClickListener(new OnClickListener() {
             public void onClick(View v) {
                 Intent i = new Intent(ExternalAppActivity.this, CaseContentActivity.class);
-
                 ExternalAppActivity.this.startActivity(i);
             }
-
         });
 
-        fixtureButton = (Button)this.findViewById(R.id.button_fixture);
-        fixtureButton.setOnClickListener(new OnClickListener() {
-
+        Button getFixtureDataButton = (Button)this.findViewById(R.id.button_fixture);
+        getFixtureDataButton.setOnClickListener(new OnClickListener() {
             public void onClick(View v) {
                 Intent i = new Intent(ExternalAppActivity.this, FixtureContentActivity.class);
-
                 ExternalAppActivity.this.startActivity(i);
             }
-
         });
 
 
-        receiver = (Button)this.findViewById(R.id.button_receiver);
+        Button receiver = (Button)this.findViewById(R.id.button_receiver);
         receiver.setOnClickListener(new OnClickListener() {
-
             public void onClick(View v) {
                 Intent i = new Intent(ExternalAppActivity.this, IntentReceiverTest.class);
-
                 ExternalAppActivity.this.startActivity(i);
             }
-
         });
-
-
     }
 
-    /* (non-Javadoc)
-     * @see android.app.Activity#onActivityResult(int, int, android.content.Intent)
-     */
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -172,9 +139,6 @@ public class ExternalAppActivity extends Activity {
         }
     }
 
-    /* (non-Javadoc)
-     * @see android.app.Activity#onResume()
-     */
     @Override
     protected void onResume() {
         super.onResume();
@@ -187,17 +151,17 @@ public class ExternalAppActivity extends Activity {
         }
     }
 
-    protected Pair<byte[], byte[]> serializeBundle(Bundle b) {
+    private Pair<byte[], byte[]> serializeBundle(Bundle b) {
         Parcel p = Parcel.obtain();
         p.setDataPosition(0);
         p.writeBundle(b);
-        return encrypt(p.marshall());
+        Pair<byte[], byte[]> keyAndEncryptedInput = encrypt(p.marshall());
+        p.recycle();
+        return keyAndEncryptedInput;
     }
 
-    protected Pair<byte[], byte[]> encrypt(byte[] input) {
+    private Pair<byte[], byte[]> encrypt(byte[] input) {
         try {
-
-
             KeyGenerator generator = KeyGenerator.getInstance("AES");
             generator.init(256, new SecureRandom());
             SecretKey aesKey = generator.generateKey();
@@ -213,7 +177,7 @@ public class ExternalAppActivity extends Activity {
             Cipher dataCipher = Cipher.getInstance("AES");
             dataCipher.init(Cipher.ENCRYPT_MODE, aesKey);
 
-            return new Pair<byte[], byte[]>(encryptedAesKey, dataCipher.doFinal(input));
+            return new Pair<>(encryptedAesKey, dataCipher.doFinal(input));
         } catch (GeneralSecurityException gse) {
             gse.printStackTrace();
             Toast.makeText(this, "Problem with keys! Check log", Toast.LENGTH_LONG).show();
