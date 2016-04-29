@@ -35,8 +35,8 @@ public class ExternalAppActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
-        Button b = (Button)this.findViewById(R.id.btn_start_cc);
-        b.setOnClickListener(new OnClickListener() {
+        Button startCommCareButton = (Button)this.findViewById(R.id.btn_start_cc);
+        startCommCareButton.setOnClickListener(new OnClickListener() {
             public void onClick(View v) {
                 Intent i = new Intent("org.commcare.dalvik.action.CommCareSession");
                 String sssd = "";
@@ -50,8 +50,8 @@ public class ExternalAppActivity extends Activity {
             }
         });
 
-        Button ac = (Button)this.findViewById(R.id.acquire_key);
-        ac.setOnClickListener(new OnClickListener() {
+        Button acquireKeyButton = (Button)this.findViewById(R.id.acquire_key);
+        acquireKeyButton.setOnClickListener(new OnClickListener() {
             public void onClick(View v) {
                 Intent i = new Intent("org.commcare.dalvik.action.CommCareKeyAccessRequest");
                 ExternalAppActivity.this.startActivityForResult(i, KEY_REQUEST_CODE);
@@ -90,7 +90,6 @@ public class ExternalAppActivity extends Activity {
 
                 ExternalAppActivity.this.sendBroadcast(i);
             }
-
         });
 
         Button media = (Button)this.findViewById(R.id.button_media);
@@ -101,16 +100,16 @@ public class ExternalAppActivity extends Activity {
             }
         });
 
-        Button content = (Button)this.findViewById(R.id.button_content);
-        content.setOnClickListener(new OnClickListener() {
+        Button getCaseDataButton = (Button)this.findViewById(R.id.button_content);
+        getCaseDataButton.setOnClickListener(new OnClickListener() {
             public void onClick(View v) {
                 Intent i = new Intent(ExternalAppActivity.this, CaseContentActivity.class);
                 ExternalAppActivity.this.startActivity(i);
             }
         });
 
-        Button fixtureButton = (Button)this.findViewById(R.id.button_fixture);
-        fixtureButton.setOnClickListener(new OnClickListener() {
+        Button getFixtureDataButton = (Button)this.findViewById(R.id.button_fixture);
+        getFixtureDataButton.setOnClickListener(new OnClickListener() {
             public void onClick(View v) {
                 Intent i = new Intent(ExternalAppActivity.this, FixtureContentActivity.class);
                 ExternalAppActivity.this.startActivity(i);
@@ -156,7 +155,9 @@ public class ExternalAppActivity extends Activity {
         Parcel p = Parcel.obtain();
         p.setDataPosition(0);
         p.writeBundle(b);
-        return encrypt(p.marshall());
+        Pair<byte[], byte[]> keyAndEncryptedInput = encrypt(p.marshall());
+        p.recycle();
+        return keyAndEncryptedInput;
     }
 
     private Pair<byte[], byte[]> encrypt(byte[] input) {
