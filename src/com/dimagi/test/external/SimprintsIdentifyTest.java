@@ -9,6 +9,7 @@ import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 
+import com.simprints.libsimprints.Constants;
 import com.simprints.libsimprints.Identification;
 
 import java.util.ArrayList;
@@ -61,7 +62,7 @@ public class SimprintsIdentifyTest extends FragmentActivity implements
         }
         caseData.close();
         Collections.sort(ids);
-        indentificationIntent.putParcelableArrayListExtra("identification", ids);
+        indentificationIntent.putParcelableArrayListExtra(Constants.SIMPRINTS_IDENTIFICATIONS, ids);
         setResult(RESULT_OK, indentificationIntent);
         finish();
     }
