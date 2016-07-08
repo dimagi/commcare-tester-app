@@ -24,7 +24,10 @@ public class SimprintsRegistrationTest extends FragmentActivity {
         Intent calloutIntent = getIntent();
 
         String guid = calloutIntent.getStringExtra("guid");
-        int fingerCount = calloutIntent.getIntExtra("count", 2);
+        int fingerCount = 2;
+        if (calloutIntent.hasExtra("count")) {
+            fingerCount = Integer.valueOf(calloutIntent.getStringExtra("count"));
+        }
         byte[] rightIndex, rightThumb, leftIndex, leftThumb;
         rightThumb = null;
         leftThumb = null;
