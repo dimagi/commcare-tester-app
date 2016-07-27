@@ -11,6 +11,7 @@ import android.support.v4.content.Loader;
 
 import com.simprints.libsimprints.Constants;
 import com.simprints.libsimprints.Identification;
+import com.simprints.libsimprints.Tier;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -25,7 +26,7 @@ import java.util.Collections;
 public class SimprintsIdentifyTest extends FragmentActivity implements
         LoaderManager.LoaderCallbacks<Cursor> {
     private static final int CASE_LOADER = 0;
-    private static final int RESULT_COUNT = 3;
+    private static final int RESULT_COUNT = 20;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,9 +55,10 @@ public class SimprintsIdentifyTest extends FragmentActivity implements
         int index = caseData.getColumnIndexOrThrow("case_id");
 
         float confidence = 0.0f;
+        Tier[] tiers = Tier.values();
         while (!caseData.isAfterLast() && (ids.size() < RESULT_COUNT)) {
             String caseId = caseData.getString(index);
-            ids.add(new Identification(caseId, confidence));
+            ids.add(new Identification(caseId, confidence, tiers[(int)(Math.random() * tiers.length)]));
             confidence += 0.2f;
             caseData.moveToNext();
         }
