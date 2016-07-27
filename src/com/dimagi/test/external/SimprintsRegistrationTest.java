@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 
 import com.simprints.libsimprints.Constants;
+import com.simprints.libsimprints.FingerIdentifier;
 import com.simprints.libsimprints.Registration;
 
 import java.util.UUID;
@@ -40,7 +41,11 @@ public class SimprintsRegistrationTest extends FragmentActivity {
             case 2:
                 rightIndex = UUID.randomUUID().toString().getBytes();
                 leftIndex = UUID.randomUUID().toString().getBytes();
-                Registration registration = new Registration(guid, rightIndex, rightThumb, leftIndex, leftThumb);
+                Registration registration = new Registration(guid);
+                registration.setTemplate(FingerIdentifier.LEFT_THUMB, leftThumb);
+                registration.setTemplate(FingerIdentifier.RIGHT_THUMB, rightThumb);
+                registration.setTemplate(FingerIdentifier.RIGHT_INDEX_FINGER, rightIndex);
+                registration.setTemplate(FingerIdentifier.LEFT_INDEX_FINGER, leftIndex);
                 Intent registrationIntent = new Intent();
                 registrationIntent.putExtra(Constants.SIMPRINTS_REGISTRATION, registration);
                 setResult(RESULT_OK, registrationIntent);
