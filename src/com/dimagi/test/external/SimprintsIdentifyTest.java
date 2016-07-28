@@ -54,12 +54,12 @@ public class SimprintsIdentifyTest extends FragmentActivity implements
         caseData.moveToFirst();
         int index = caseData.getColumnIndexOrThrow("case_id");
 
-        float confidence = 0.0f;
+        int confidence = 0;
         Tier[] tiers = Tier.values();
         while (!caseData.isAfterLast() && (ids.size() < RESULT_COUNT)) {
             String caseId = caseData.getString(index);
             ids.add(new Identification(caseId, confidence, tiers[(int)(Math.random() * tiers.length)]));
-            confidence += 0.2f;
+            confidence += 20;
             caseData.moveToNext();
         }
         caseData.close();
