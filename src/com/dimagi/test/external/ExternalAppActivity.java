@@ -8,6 +8,7 @@ import android.util.Pair;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import java.security.GeneralSecurityException;
@@ -25,6 +26,9 @@ public class ExternalAppActivity extends Activity {
 
     private Button login;
     private Button sync;
+
+    private EditText usernameText;
+    private EditText passwordText;
 
     private byte[] publicKey;
     private String keyId;
@@ -65,8 +69,8 @@ public class ExternalAppActivity extends Activity {
                 i.putExtra("commcare_sharing_key_id", keyId);
                 Bundle action = new Bundle();
                 action.putString("commcareaction", "login");
-                action.putString("username", "test");
-                action.putString("password", "234");
+                action.putString("username", usernameText.getText().toString());
+                action.putString("password", passwordText.getText().toString());
                 Pair<byte[], byte[]> serializedBundle = serializeBundle(action);
 
                 i.putExtra("commcare_sharing_key_symetric", serializedBundle.first);
@@ -75,6 +79,8 @@ public class ExternalAppActivity extends Activity {
                 ExternalAppActivity.this.sendBroadcast(i);
             }
         });
+        usernameText = (EditText)this.findViewById(R.id.username);
+        passwordText = (EditText)this.findViewById(R.id.password);
 
         sync = (Button)this.findViewById(R.id.sync);
         sync.setOnClickListener(new OnClickListener() {

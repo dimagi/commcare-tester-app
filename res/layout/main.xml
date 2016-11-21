@@ -22,18 +22,6 @@
         android:text="Acquire CommCare Key"/>
 
     <Button
-        android:id="@+id/log_in_local"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Log Into CommCare"/>
-
-    <Button
-        android:id="@+id/sync"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Sync CommCare"/>
-
-    <Button
         android:id="@+id/button_content"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -56,5 +44,29 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Test Broadcast Receiver"/>
+
+    <Button
+        android:id="@+id/log_in_local"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Log Into CommCare"/>
+
+    <Button
+        android:id="@+id/sync"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Sync CommCare"/>
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/username"
+        android:hint="Username"/>
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/password"
+        android:hint="Password"/>
 
 </LinearLayout>
