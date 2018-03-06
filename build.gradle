@@ -5,7 +5,7 @@ buildscript {
     }
 
     dependencies {
-        classpath 'com.android.tools.build:gradle:2.1.2'
+        classpath 'com.android.tools.build:gradle:2.3.3'
     }
 }
 
@@ -38,7 +38,7 @@ ext {
 
 android {
     compileSdkVersion "Google Inc.:Google APIs:22"
-    buildToolsVersion "23.0.3"
+    buildToolsVersion "26.0.1"
 
     lintOptions {
         abortOnError false
