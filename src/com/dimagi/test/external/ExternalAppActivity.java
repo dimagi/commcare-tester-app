@@ -41,9 +41,9 @@ public class ExternalAppActivity extends Activity {
                 Intent i = new Intent("org.commcare.dalvik.action.CommCareSession");
                 String sssd = "";
                 sssd +=
-                        "COMMAND_ID" + " " + "all-clients" + " " +
-                                "CASE_ID" + " " + "case_id" + " " + "66a4f2d0e9d5467e34122514c341ed92" + " " +
-                                "COMMAND_ID" + " " + "progress-note-all";
+                        "COMMAND_ID" + " " + "2" + " " +
+                        "CASE_ID" + " " + "case_id" + " " +"4bad4a55-34da-4249-9b81-bad65b68f876"
+                                + " " + "COMMAND_ID" + " " + "1";
 
                 i.putExtra("ccodk_session_request", sssd);
                 ExternalAppActivity.this.startActivity(i);
