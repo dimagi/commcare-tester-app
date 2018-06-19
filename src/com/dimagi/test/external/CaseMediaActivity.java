@@ -14,12 +14,12 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
 
+import org.commcare.commcaresupportlibrary.CaseUtils;
+
 /**
  * Test class used for testing the multimedia content provider of CommCareODK
  */
 public class CaseMediaActivity extends Activity {
-
-    private final String CASE_URI_ROOT = "content://org.commcare.dalvik.case/casedb/";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,31 +32,23 @@ public class CaseMediaActivity extends Activity {
      * Queries CommCare ODK and displays a list of the currently loaded cases
      */
     private void showCaseData(String selection, String[] selectionArgs) {
-        ListView la = (ListView)this.findViewById(R.id.list_view);
-        Cursor c = this.managedQuery(Uri.parse(CASE_URI_ROOT + "case"), null, selection, selectionArgs, null);
+        ListView la = this.findViewById(R.id.list_view);
+        final Cursor cursor = CaseUtils.getCaseDataCursor(this, null, selection, selectionArgs);
 
-        final SimpleCursorAdapter sca = new SimpleCursorAdapter(this, android.R.layout.two_line_list_item, c, new String[]{"case_name", "case_id"}, new int[]{android.R.id.text1, android.R.id.text2});
+        final SimpleCursorAdapter sca = new SimpleCursorAdapter(this, android.R.layout.two_line_list_item, cursor, new String[]{"case_name", "case_id"}, new int[]{android.R.id.text1, android.R.id.text2}, 1);
+        la.setOnItemLongClickListener((arg0, arg1, position, arg3) -> {
+            cursor.moveToPosition(position);
 
-        la.setOnItemLongClickListener(new OnItemLongClickListener() {
-            public boolean onItemLongClick(AdapterView<?> arg0, View arg1, int position, long arg3) {
-                Cursor cursor = sca.getCursor();
-                cursor.moveToPosition(position);
-
-                String caseType = cursor.getString(cursor.getColumnIndex("case_type"));
-                CaseMediaActivity.this.showCaseData("case_type = ? AND\nstatus=?", new String[]{caseType, "open"});
-                return true;
-            }
+            String caseType = cursor.getString(cursor.getColumnIndex("case_type"));
+            CaseMediaActivity.this.showCaseData("case_type = ? AND\nstatus=?", new String[]{caseType, "open"});
+            return true;
         });
 
         la.setAdapter(sca);
-        la.setOnItemClickListener(new OnItemClickListener() {
-            public void onItemClick(AdapterView<?> arg0, View v, int position, long id) {
-                Cursor cursor = sca.getCursor();
-                cursor.moveToPosition(position);
-
-                String caseId = cursor.getString(cursor.getColumnIndex("case_id"));
-                CaseMediaActivity.this.moveToMediaAdapter(caseId);
-            }
+        la.setOnItemClickListener((arg0, v, position, id) -> {
+            cursor.moveToPosition(position);
+            String caseId = cursor.getString(cursor.getColumnIndex("case_id"));
+            CaseMediaActivity.this.moveToMediaAdapter(caseId);
         });
     }
 
@@ -64,14 +56,13 @@ public class CaseMediaActivity extends Activity {
      * Queries CommCareODK for the multimedia associate with this case and displays
      */
     private void moveToMediaAdapter(String caseId) {
-        Cursor cursor = this.managedQuery(Uri.parse(CASE_URI_ROOT + "attachment/" + caseId), null, null, null, null);
-
+        Cursor cursor = CaseUtils.getCaseAttachmentData(this, caseId);
         cursor.moveToFirst();
         while (!cursor.isAfterLast()) {
             String filePath = cursor.getString(cursor.getColumnIndex("file-source"));
 
             if (!"invalid".equals(filePath)) {
-                ImageView imageView = (ImageView)this.findViewById(R.id.image_view);
+                ImageView imageView = this.findViewById(R.id.image_view);
 
                 Bitmap mBmp = BitmapFactory.decodeFile(filePath);
                 if (mBmp != null) {

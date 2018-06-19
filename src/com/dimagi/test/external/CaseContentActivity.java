@@ -24,12 +24,11 @@ public class CaseContentActivity extends Activity {
 
     private void showCaseData(String selection, String[] selectionArgs) {
         ListView la = this.findViewById(R.id.list_view);
-        Cursor c = CaseUtils.getCaseDataCursor(this, null, selection, selectionArgs);
+        final Cursor cursor = CaseUtils.getCaseDataCursor(this, null, selection, selectionArgs);
 
-        final SimpleCursorAdapter cursorAdapter = new SimpleCursorAdapter(this, android.R.layout.two_line_list_item, c, new String[]{"case_name", "case_id"}, new int[]{android.R.id.text1, android.R.id.text2}, 1);
+        final SimpleCursorAdapter cursorAdapter = new SimpleCursorAdapter(this, android.R.layout.two_line_list_item, cursor, new String[]{"case_name", "case_id"}, new int[]{android.R.id.text1, android.R.id.text2}, 1);
 
         la.setOnItemLongClickListener((arg0, arg1, position, arg3) -> {
-            Cursor cursor = cursorAdapter.getCursor();
             cursor.moveToPosition(position);
 
             String caseType = cursor.getString(cursor.getColumnIndex("case_type"));
@@ -40,9 +39,7 @@ public class CaseContentActivity extends Activity {
 
         la.setAdapter(cursorAdapter);
         la.setOnItemClickListener((arg0, v, position, id) -> {
-            Cursor cursor = cursorAdapter.getCursor();
             cursor.moveToPosition(position);
-
             String caseId = cursor.getString(cursor.getColumnIndex("case_id"));
             CaseContentActivity.this.moveToDataAtapter(caseId);
         });
@@ -52,7 +49,6 @@ public class CaseContentActivity extends Activity {
         Cursor cursor = CaseUtils.getCaseDataCursor(this, caseId);
         SimpleCursorAdapter cursorAdapter = new SimpleCursorAdapter(this, android.R.layout.two_line_list_item, cursor, new String[]{"value", "datum_id"}, new int[]{android.R.id.text1, android.R.id.text2}, 1);
         ListView la = this.findViewById(R.id.list_view);
-
         la.setAdapter(cursorAdapter);
         la.setOnItemClickListener(null);
     }

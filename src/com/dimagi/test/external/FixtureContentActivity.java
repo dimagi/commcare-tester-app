@@ -27,18 +27,16 @@ public class FixtureContentActivity extends Activity {
 
     private void showFixtureData() {
         ListView listView = this.findViewById(R.id.list_view);
-        Cursor c = FixtureUtils.getFixtureList(this);
+        final Cursor cursor = FixtureUtils.getFixtureList(this);
 
         final SimpleCursorAdapter cursorAdapter = new SimpleCursorAdapter(
-                this, android.R.layout.two_line_list_item, c,
+                this, android.R.layout.two_line_list_item, cursor,
                 new String[]{"_id", "instance_id"},
                 new int[]{android.R.id.text1, android.R.id.text2}, 1);
 
         listView.setAdapter(cursorAdapter);
         listView.setOnItemClickListener((arg0, v, position, id) -> {
-            Cursor cursor = cursorAdapter.getCursor();
             cursor.moveToPosition(position);
-
             String fixtureId = cursor.getString(cursor.getColumnIndex("instance_id"));
             FixtureContentActivity.this.moveToDataAtapter(fixtureId);
         });
