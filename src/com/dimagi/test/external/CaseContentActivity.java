@@ -11,6 +11,8 @@ import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
 
+import org.commcare.commcaresupportlibrary.CaseUtils;
+
 public class CaseContentActivity extends Activity {
 
     @Override
@@ -21,41 +23,37 @@ public class CaseContentActivity extends Activity {
     }
 
     private void showCaseData(String selection, String[] selectionArgs) {
-        ListView la = (ListView)this.findViewById(R.id.list_view);
-        Cursor c = this.managedQuery(Uri.parse("content://org.commcare.dalvik.case/casedb/case"), null, selection, selectionArgs, null);
+        ListView la = this.findViewById(R.id.list_view);
+        Cursor c = CaseUtils.getCaseDataCursor(this, null, selection, selectionArgs);
 
-        final SimpleCursorAdapter sca = new SimpleCursorAdapter(this, android.R.layout.two_line_list_item, c, new String[]{"case_name", "case_id"}, new int[]{android.R.id.text1, android.R.id.text2});
+        final SimpleCursorAdapter cursorAdapter = new SimpleCursorAdapter(this, android.R.layout.two_line_list_item, c, new String[]{"case_name", "case_id"}, new int[]{android.R.id.text1, android.R.id.text2}, 1);
 
-        la.setOnItemLongClickListener(new OnItemLongClickListener() {
-            public boolean onItemLongClick(AdapterView<?> arg0, View arg1, int position, long arg3) {
-                Cursor cursor = sca.getCursor();
-                cursor.moveToPosition(position);
+        la.setOnItemLongClickListener((arg0, arg1, position, arg3) -> {
+            Cursor cursor = cursorAdapter.getCursor();
+            cursor.moveToPosition(position);
 
-                String caseType = cursor.getString(cursor.getColumnIndex("case_type"));
-                CaseContentActivity.this.showCaseData("case_type = ? AND\nstatus=?", new String[]{caseType, "open"});
-                return true;
-            }
+            String caseType = cursor.getString(cursor.getColumnIndex("case_type"));
+            CaseContentActivity.this.showCaseData("case_type = ? AND" +
+                    "\nstatus=?", new String[]{caseType, "open"});
+            return true;
         });
 
-        la.setAdapter(sca);
-        la.setOnItemClickListener(new OnItemClickListener() {
-            public void onItemClick(AdapterView<?> arg0, View v, int position, long id) {
-                Cursor cursor = sca.getCursor();
-                cursor.moveToPosition(position);
+        la.setAdapter(cursorAdapter);
+        la.setOnItemClickListener((arg0, v, position, id) -> {
+            Cursor cursor = cursorAdapter.getCursor();
+            cursor.moveToPosition(position);
 
-                String caseId = cursor.getString(cursor.getColumnIndex("case_id"));
-                CaseContentActivity.this.moveToDataAtapter(caseId);
-            }
+            String caseId = cursor.getString(cursor.getColumnIndex("case_id"));
+            CaseContentActivity.this.moveToDataAtapter(caseId);
         });
     }
 
     private void moveToDataAtapter(String caseId) {
-        Cursor c = this.managedQuery(Uri.parse("content://org.commcare.dalvik.case/casedb/data/" + caseId), null, null, null, null);
+        Cursor cursor = CaseUtils.getCaseDataCursor(this, caseId);
+        SimpleCursorAdapter cursorAdapter = new SimpleCursorAdapter(this, android.R.layout.two_line_list_item, cursor, new String[]{"value", "datum_id"}, new int[]{android.R.id.text1, android.R.id.text2}, 1);
+        ListView la = this.findViewById(R.id.list_view);
 
-        SimpleCursorAdapter sca = new SimpleCursorAdapter(this, android.R.layout.two_line_list_item, c, new String[]{"value", "datum_id"}, new int[]{android.R.id.text1, android.R.id.text2});
-        ListView la = (ListView)this.findViewById(R.id.list_view);
-
-        la.setAdapter(sca);
+        la.setAdapter(cursorAdapter);
         la.setOnItemClickListener(null);
     }
 }

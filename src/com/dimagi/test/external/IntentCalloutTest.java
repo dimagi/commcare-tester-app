@@ -29,66 +29,62 @@ public class IntentCalloutTest extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_callout);
-        Button returnToForm = (Button)this.findViewById(R.id.button_return);
+        Button returnToForm = this.findViewById(R.id.button_return);
 
         Intent intent = getIntent();
 
-        TextView outputTextView = (TextView)this.findViewById(R.id.textView2);
+        TextView outputTextView = this.findViewById(R.id.textView2);
         String displayText = intent.getStringExtra("display_text");
         outputTextView.setText(displayText);
 
-        returnToForm.setOnClickListener(new OnClickListener() {
-            public void onClick(View v) {
-                Intent returningIntent = new Intent(getIntent());
+        returnToForm.setOnClickListener(v -> {
+            Intent returningIntent = new Intent(getIntent());
 
-                Bundle returnBundle = new Bundle();
+            Bundle returnBundle = new Bundle();
 
-                String defaultText = defaultval.getText().toString();
-                if (defaultText != "") {
-                    returningIntent.putExtra("odk_intent_data", defaultText);
-                }
+            String defaultText = defaultval.getText().toString();
+            if (defaultText != "") {
+                returningIntent.putExtra("odk_intent_data", defaultText);
+            }
 
-                String extraText = extraVal.getText().toString();
-                if (extraText != "") {
-                    returnBundle.putString("extra_text", extraText);
-                }
+            String extraText = extraVal.getText().toString();
+            if (extraText != "") {
+                returnBundle.putString("extra_text", extraText);
+            }
 
-                if (location != null && location.exists()) {
-                    returnBundle.putString("phot_location", location.toString());
-                }
-                returningIntent.putExtra("odk_intent_bundle", returnBundle);
-                IntentCalloutTest.this.setResult(Activity.RESULT_OK, returningIntent);
-                finish();
+            if (location != null && location.exists()) {
+                returnBundle.putString("phot_location", location.toString());
+            }
+            returningIntent.putExtra("odk_intent_bundle", returnBundle);
+            IntentCalloutTest.this.setResult(Activity.RESULT_OK, returningIntent);
+            finish();
+        });
+
+        Button getImage = this.findViewById(R.id.extra_image_value);
+        getImage.setOnClickListener(v -> {
+            Intent i = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+
+            try {
+                location = File.createTempFile("image" + System.currentTimeMillis(), ".jpg");
+            } catch (IOException e1) {
+                // TODO Auto-generated catch block
+                e1.printStackTrace();
+                return;
+            }
+
+            // if this gets modified, the onActivityResult in
+            // FormEntyActivity will also need to be updated.
+            i.putExtra(android.provider.MediaStore.EXTRA_OUTPUT, Uri.fromFile(location));
+            try {
+                startActivityForResult(i, KEY_REQUEST_IMAGE);
+            } catch (ActivityNotFoundException e) {
+                Toast.makeText(IntentCalloutTest.this, "No Camera", Toast.LENGTH_SHORT).show();
             }
         });
 
-        Button getImage = (Button)this.findViewById(R.id.extra_image_value);
-        getImage.setOnClickListener(new OnClickListener() {
-            public void onClick(View v) {
-                Intent i = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
-
-                try {
-                    location = File.createTempFile("image" + System.currentTimeMillis(), ".jpg");
-                } catch (IOException e1) {
-                    // TODO Auto-generated catch block
-                    e1.printStackTrace();
-                    return;
-                }
-
-                // if this gets modified, the onActivityResult in
-                // FormEntyActivity will also need to be updated.
-                i.putExtra(android.provider.MediaStore.EXTRA_OUTPUT, Uri.fromFile(location));
-                try {
-                    startActivityForResult(i, KEY_REQUEST_IMAGE);
-                } catch (ActivityNotFoundException e) {
-                    Toast.makeText(IntentCalloutTest.this, "No Camera", Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
-
-        defaultval = (EditText)this.findViewById(R.id.default_callback_value);
-        extraVal = (EditText)this.findViewById(R.id.extra_callback_value);
-        imageLocationText = (TextView)this.findViewById(R.id.image_location);
+        defaultval = this.findViewById(R.id.default_callback_value);
+        extraVal = this.findViewById(R.id.extra_callback_value);
+        imageLocationText = this.findViewById(R.id.image_location);
 
         if (this.getLastNonConfigurationInstance() != null) {
             location = ((IntentCalloutTest)this.getLastNonConfigurationInstance()).location;

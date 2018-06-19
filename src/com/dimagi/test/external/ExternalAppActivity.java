@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.os.Parcel;
 import android.util.Pair;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.Toast;
 
@@ -35,94 +34,78 @@ public class ExternalAppActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
-        Button startCommCareButton = (Button)this.findViewById(R.id.btn_start_cc);
-        startCommCareButton.setOnClickListener(new OnClickListener() {
-            public void onClick(View v) {
-                Intent i = new Intent("org.commcare.dalvik.action.CommCareSession");
-                String sssd = "";
-                sssd +=
-                        "COMMAND_ID" + " " + "m2" + " " +
-                        "CASE_ID" + " " + "case_id" + " " +"4bad4a55-34da-4249-9b81-bad65b68f876"
-                                + " " + "COMMAND_ID" + " " + "m2-f1";
+        Button startCommCareButton = this.findViewById(R.id.btn_start_cc);
+        startCommCareButton.setOnClickListener(v -> {
+            Intent i = new Intent("org.commcare.dalvik.action.CommCareSession");
+            String sssd = "";
+            sssd +=
+                    "COMMAND_ID" + " " + "m2" + " " +
+                    "CASE_ID" + " " + "case_id" + " " +"4bad4a55-34da-4249-9b81-bad65b68f876"
+                            + " " + "COMMAND_ID" + " " + "m2-f1";
 
-                i.putExtra("ccodk_session_request", sssd);
-                ExternalAppActivity.this.startActivity(i);
-            }
+            i.putExtra("ccodk_session_request", sssd);
+            ExternalAppActivity.this.startActivity(i);
         });
 
-        Button acquireKeyButton = (Button)this.findViewById(R.id.acquire_key);
-        acquireKeyButton.setOnClickListener(new OnClickListener() {
-            public void onClick(View v) {
-                Intent i = new Intent("org.commcare.dalvik.action.CommCareKeyAccessRequest");
-                ExternalAppActivity.this.startActivityForResult(i, KEY_REQUEST_CODE);
-            }
+        Button acquireKeyButton = this.findViewById(R.id.acquire_key);
+        acquireKeyButton.setOnClickListener(v -> {
+            Intent i = new Intent("org.commcare.dalvik.action.CommCareKeyAccessRequest");
+            ExternalAppActivity.this.startActivityForResult(i, KEY_REQUEST_CODE);
         });
 
-        login = (Button)this.findViewById(R.id.log_in_local);
-        login.setOnClickListener(new OnClickListener() {
-            public void onClick(View v) {
-                Intent i = new Intent("org.commcare.dalvik.api.action.ExternalAction");
-                i.putExtra("commcare_sharing_key_id", keyId);
-                Bundle action = new Bundle();
-                action.putString("commcareaction", "login");
-                action.putString("username", "test");
-                action.putString("password", "234");
-                Pair<byte[], byte[]> serializedBundle = serializeBundle(action);
+        login = this.findViewById(R.id.log_in_local);
+        login.setOnClickListener(v -> {
+            Intent i = new Intent("org.commcare.dalvik.api.action.ExternalAction");
+            i.putExtra("commcare_sharing_key_id", keyId);
+            Bundle action = new Bundle();
+            action.putString("commcareaction", "login");
+            action.putString("username", "test");
+            action.putString("password", "234");
+            Pair<byte[], byte[]> serializedBundle = serializeBundle(action);
 
-                i.putExtra("commcare_sharing_key_symetric", serializedBundle.first);
-                i.putExtra("commcare_sharing_key_callout", serializedBundle.second);
+            i.putExtra("commcare_sharing_key_symetric", serializedBundle.first);
+            i.putExtra("commcare_sharing_key_callout", serializedBundle.second);
 
-                ExternalAppActivity.this.sendBroadcast(i);
-            }
+            ExternalAppActivity.this.sendBroadcast(i);
         });
 
-        sync = (Button)this.findViewById(R.id.sync);
-        sync.setOnClickListener(new OnClickListener() {
-            public void onClick(View v) {
-                Intent i = new Intent("org.commcare.dalvik.api.action.ExternalAction");
-                i.putExtra("commcare_sharing_key_id", keyId);
-                Bundle action = new Bundle();
-                action.putString("commcareaction", "sync");
-                Pair<byte[], byte[]> serializedBundle = serializeBundle(action);
+        sync = this.findViewById(R.id.sync);
+        sync.setOnClickListener(v -> {
+            Intent i = new Intent("org.commcare.dalvik.api.action.ExternalAction");
+            i.putExtra("commcare_sharing_key_id", keyId);
+            Bundle action = new Bundle();
+            action.putString("commcareaction", "sync");
+            Pair<byte[], byte[]> serializedBundle = serializeBundle(action);
 
-                i.putExtra("commcare_sharing_key_symetric", serializedBundle.first);
-                i.putExtra("commcare_sharing_key_callout", serializedBundle.second);
+            i.putExtra("commcare_sharing_key_symetric", serializedBundle.first);
+            i.putExtra("commcare_sharing_key_callout", serializedBundle.second);
 
-                ExternalAppActivity.this.sendBroadcast(i);
-            }
+            ExternalAppActivity.this.sendBroadcast(i);
         });
 
-        Button media = (Button)this.findViewById(R.id.button_media);
-        media.setOnClickListener(new OnClickListener() {
-            public void onClick(View v) {
-                Intent i = new Intent(ExternalAppActivity.this, CaseMediaActivity.class);
-                ExternalAppActivity.this.startActivity(i);
-            }
+        Button media = this.findViewById(R.id.button_media);
+        media.setOnClickListener(v -> {
+            Intent i = new Intent(ExternalAppActivity.this, CaseMediaActivity.class);
+            ExternalAppActivity.this.startActivity(i);
         });
 
-        Button getCaseDataButton = (Button)this.findViewById(R.id.button_content);
-        getCaseDataButton.setOnClickListener(new OnClickListener() {
-            public void onClick(View v) {
-                Intent i = new Intent(ExternalAppActivity.this, CaseContentActivity.class);
-                ExternalAppActivity.this.startActivity(i);
-            }
+        Button getCaseDataButton = this.findViewById(R.id.button_case_data);
+        getCaseDataButton.setOnClickListener(v -> {
+            Intent i = new Intent(ExternalAppActivity.this, CaseContentActivity.class);
+            ExternalAppActivity.this.startActivity(i);
         });
 
-        Button getFixtureDataButton = (Button)this.findViewById(R.id.button_fixture);
-        getFixtureDataButton.setOnClickListener(new OnClickListener() {
-            public void onClick(View v) {
-                Intent i = new Intent(ExternalAppActivity.this, FixtureContentActivity.class);
-                ExternalAppActivity.this.startActivity(i);
-            }
+        Button getFixtureDataButton = this.findViewById(R.id.button_fixture_data);
+        getFixtureDataButton.setOnClickListener(v -> {
+            Intent i = new Intent(ExternalAppActivity.this, FixtureContentActivity.class);
+            ExternalAppActivity.this.startActivity(i);
         });
 
 
-        Button receiver = (Button)this.findViewById(R.id.button_receiver);
-        receiver.setOnClickListener(new OnClickListener() {
-            public void onClick(View v) {
-                Intent i = new Intent(ExternalAppActivity.this, IntentReceiverTest.class);
-                ExternalAppActivity.this.startActivity(i);
-            }
+        Button receiver = this.findViewById(R.id.button_receiver);
+        receiver.setOnClickListener(v -> {
+            Intent i = new Intent(ExternalAppActivity.this, IntentReceiverTest.class);
+            ExternalAppActivity.this.startActivity(i);
         });
     }
 
