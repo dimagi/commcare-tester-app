@@ -24,7 +24,7 @@ public class CaseContentActivity extends Activity {
 
     private void showCaseData(String selection, String[] selectionArgs) {
         ListView la = this.findViewById(R.id.list_view);
-        final Cursor cursor = CaseUtils.getCaseDataCursor(this, null, selection, selectionArgs);
+        final Cursor cursor = CaseUtils.getCaseMetaData(this, selection, selectionArgs);
 
         final SimpleCursorAdapter cursorAdapter = new SimpleCursorAdapter(this, android.R.layout.two_line_list_item, cursor, new String[]{"case_name", "case_id"}, new int[]{android.R.id.text1, android.R.id.text2}, 1);
 
