@@ -1,13 +1,9 @@
 package com.dimagi.test.external;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.database.Cursor;
-import android.net.Uri;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
-import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
 
@@ -30,10 +26,12 @@ public class CaseContentActivity extends Activity {
 
         la.setOnItemLongClickListener((arg0, arg1, position, arg3) -> {
             cursor.moveToPosition(position);
-
-            String caseType = cursor.getString(cursor.getColumnIndex("case_type"));
-            CaseContentActivity.this.showCaseData("case_type = ? AND" +
-                    "\nstatus=?", new String[]{caseType, "open"});
+            String command = "COMMAND_ID" + " " + "m2" + " " +
+                    "CASE_ID" + " " + "case_id" + " " + cursor.getString(2) +
+                    " " + "COMMAND_ID" + " " + "m2-f1";
+            Intent i = new Intent("org.commcare.dalvik.action.CommCareSession");
+            i.putExtra("ccodk_session_request", command);
+            CaseContentActivity.this.startActivity(i);
             return true;
         });
 

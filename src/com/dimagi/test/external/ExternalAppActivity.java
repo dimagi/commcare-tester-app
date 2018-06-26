@@ -9,6 +9,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+import org.commcare.commcaresupportlibrary.CaseUtils;
+
 import java.security.GeneralSecurityException;
 import java.security.KeyFactory;
 import java.security.SecureRandom;
@@ -35,13 +37,13 @@ public class ExternalAppActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
         Button startCommCareButton = this.findViewById(R.id.btn_start_cc);
+        CaseUtils.setPackageExtension(this, null);
         startCommCareButton.setOnClickListener(v -> {
             Intent i = new Intent("org.commcare.dalvik.action.CommCareSession");
             String sssd = "";
             sssd +=
-                    "COMMAND_ID" + " " + "m2" + " " +
-                    "CASE_ID" + " " + "case_id" + " " +"4bad4a55-34da-4249-9b81-bad65b68f876"
-                            + " " + "COMMAND_ID" + " " + "m2-f1";
+                    "COMMAND_ID" + " " + "m0" + " " +
+                            "COMMAND_ID" + " " + "m0-f0";
 
             i.putExtra("ccodk_session_request", sssd);
             ExternalAppActivity.this.startActivity(i);
