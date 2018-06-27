@@ -27,7 +27,7 @@ public class CaseContentActivity extends Activity {
         la.setOnItemLongClickListener((arg0, arg1, position, arg3) -> {
             cursor.moveToPosition(position);
             String command = "COMMAND_ID" + " " + "m2" + " " +
-                    "CASE_ID" + " " + "case_id" + " " + cursor.getString(2) +
+                    "CASE_ID" + " " + "case_id" + " " + cursor.getString(1) +
                     " " + "COMMAND_ID" + " " + "m2-f1";
             Intent i = new Intent("org.commcare.dalvik.action.CommCareSession");
             i.putExtra("ccodk_session_request", command);
