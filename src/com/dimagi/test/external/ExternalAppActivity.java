@@ -109,6 +109,8 @@ public class ExternalAppActivity extends Activity {
             Intent i = new Intent(ExternalAppActivity.this, IntentReceiverTest.class);
             ExternalAppActivity.this.startActivity(i);
         });
+
+        Permissions.acquireAllAppPermissions(this, Permissions.ALL_PERMISSIONS_REQUEST);
     }
 
     @Override
