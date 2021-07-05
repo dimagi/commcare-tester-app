@@ -1,6 +1,7 @@
 package com.dimagi.test.external;
 
 import android.app.Activity;
+import android.content.ComponentName;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Parcel;
@@ -75,6 +76,7 @@ public class ExternalAppActivity extends Activity {
         sync.setOnClickListener(v -> {
             Intent i = new Intent("org.commcare.dalvik.api.action.ExternalAction");
             i.putExtra("commcare_sharing_key_id", keyId);
+            i.setComponent(new ComponentName("org.commcare.dalvik", "org.commcare.provider.ExternalApiReceiver"));
             Bundle action = new Bundle();
             action.putString("commcareaction", "sync");
             Pair<byte[], byte[]> serializedBundle = serializeBundle(action);
