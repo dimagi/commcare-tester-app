@@ -1,9 +1,11 @@
 package com.dimagi.test.external;
 
 import android.app.Activity;
+import android.content.ComponentName;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Parcel;
+import android.util.Log;
 import android.util.Pair;
 import android.view.View;
 import android.widget.Button;
@@ -24,6 +26,7 @@ import javax.crypto.SecretKey;
 
 public class ExternalAppActivity extends Activity {
 
+    private static final String CC_PACKAGE_NAME = "org.commcare.dalvik";
     private Button login;
     private Button sync;
 
@@ -58,11 +61,13 @@ public class ExternalAppActivity extends Activity {
         login = this.findViewById(R.id.log_in_local);
         login.setOnClickListener(v -> {
             Intent i = new Intent("org.commcare.dalvik.api.action.ExternalAction");
+            i.setComponent(new ComponentName(CC_PACKAGE_NAME,
+                    "org.commcare.provider.ExternalApiReceiver"));
             i.putExtra("commcare_sharing_key_id", keyId);
             Bundle action = new Bundle();
             action.putString("commcareaction", "login");
             action.putString("username", "test");
-            action.putString("password", "234");
+            action.putString("password", "123");
             Pair<byte[], byte[]> serializedBundle = serializeBundle(action);
 
             i.putExtra("commcare_sharing_key_symetric", serializedBundle.first);
@@ -74,6 +79,8 @@ public class ExternalAppActivity extends Activity {
         sync = this.findViewById(R.id.sync);
         sync.setOnClickListener(v -> {
             Intent i = new Intent("org.commcare.dalvik.api.action.ExternalAction");
+            i.setComponent(new ComponentName(CC_PACKAGE_NAME,
+                    "org.commcare.provider.ExternalApiReceiver"));
             i.putExtra("commcare_sharing_key_id", keyId);
             Bundle action = new Bundle();
             action.putString("commcareaction", "sync");
