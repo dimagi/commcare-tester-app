@@ -82,7 +82,6 @@ public class ExternalAppActivity extends Activity {
             i.setComponent(new ComponentName(CC_PACKAGE_NAME,
                     "org.commcare.provider.ExternalApiReceiver"));
             i.putExtra("commcare_sharing_key_id", keyId);
-            i.setComponent(new ComponentName("org.commcare.dalvik", "org.commcare.provider.ExternalApiReceiver"));
             Bundle action = new Bundle();
             action.putString("commcareaction", "sync");
             Pair<byte[], byte[]> serializedBundle = serializeBundle(action);
