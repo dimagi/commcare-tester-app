@@ -9,6 +9,7 @@
 
     <queries>
         <provider android:authorities="org.commcare.dalvik.case" />
+        <provider android:authorities="org.commcare.dalvik.fixture" />
     </queries>
 
     <application
