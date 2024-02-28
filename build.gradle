@@ -1,4 +1,7 @@
 buildscript {
+    ext {
+        agp_version = '7.4.1'
+    }
     repositories {
         mavenCentral()
         jcenter()
@@ -9,7 +12,7 @@ buildscript {
     }
 
     dependencies {
-        classpath 'com.android.tools.build:gradle:7.0.3'
+        classpath "com.android.tools.build:gradle:$agp_version"
     }
 }
 
@@ -46,7 +49,7 @@ ext {
 }
 
 android {
-    compileSdkVersion 30
+    compileSdk 33
 
     lintOptions {
         abortOnError false
@@ -67,7 +70,7 @@ android {
 
     defaultConfig {
         minSdkVersion 19
-        targetSdkVersion 30
+        targetSdkVersion 33
         applicationId "com.dimagi.test.external"
         versionCode 1
     }
