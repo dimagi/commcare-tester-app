@@ -3,6 +3,8 @@ package com.dimagi.test.external;
 import android.app.Activity;
 import android.content.ComponentName;
 import android.content.Intent;
+import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Parcel;
 import android.util.Log;
@@ -27,6 +29,7 @@ import javax.crypto.SecretKey;
 public class ExternalAppActivity extends Activity {
 
     private static final String CC_PACKAGE_NAME = "org.commcare.dalvik";
+    private static final String CASE_LIST_CONTENT_URI = "content://org.commcare.dalvik.case/casedb/case";
     private Button login;
     private Button sync;
 
@@ -117,7 +120,32 @@ public class ExternalAppActivity extends Activity {
             ExternalAppActivity.this.startActivity(i);
         });
 
+        Button btnCheckUserSessionStatus = this.findViewById(R.id.button_test_user_session_status);
+        btnCheckUserSessionStatus.setOnClickListener(v -> {
+            if (isUserSessionActive()) {
+                Toast.makeText(this, "There is an active user session!", Toast.LENGTH_LONG).show();
+            } else {
+                Toast.makeText(this, "No active user session!", Toast.LENGTH_LONG).show();
+            }
+        });
         Permissions.acquireAllAppPermissions(this, Permissions.ALL_PERMISSIONS_REQUEST);
+    }
+
+    private boolean isUserSessionActive(){
+        Uri uri = Uri.parse(CASE_LIST_CONTENT_URI);
+        Cursor cursor = null;
+        try {
+            cursor = getContentResolver().query(uri, null, null, null, null);
+            if (cursor == null) {
+                return false;
+            } else {
+                return true;
+            }
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+            }
+        }
     }
 
     @Override
