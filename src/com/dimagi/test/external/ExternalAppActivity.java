@@ -122,11 +122,13 @@ public class ExternalAppActivity extends Activity {
 
         Button btnCheckUserSessionStatus = this.findViewById(R.id.button_test_user_session_status);
         btnCheckUserSessionStatus.setOnClickListener(v -> {
+            String checkResult = "";
             if (isUserSessionActive()) {
-                Toast.makeText(this, "There is an active user session!", Toast.LENGTH_LONG).show();
+                checkResult = "There is an active user session!";
             } else {
-                Toast.makeText(this, "No active user session!", Toast.LENGTH_LONG).show();
+                checkResult = "No active user session!";
             }
+            Toast.makeText(this, checkResult, Toast.LENGTH_LONG).show();
         });
         Permissions.acquireAllAppPermissions(this, Permissions.ALL_PERMISSIONS_REQUEST);
     }
@@ -136,11 +138,7 @@ public class ExternalAppActivity extends Activity {
         Cursor cursor = null;
         try {
             cursor = getContentResolver().query(uri, null, null, null, null);
-            if (cursor == null) {
-                return false;
-            } else {
-                return true;
-            }
+            return cursor != null;
         } finally {
             if (cursor != null) {
                 cursor.close();
